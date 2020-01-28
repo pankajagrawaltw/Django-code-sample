@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+  <header>
+     <h3> SURVEY </h3>
+  </header>
+  <div class="container">
+     <form class="col s12" method="post" action="/admin/dashboard">
+        <div id="basic-form" class="section">
+           <div class="row">
+              <div class="col s12 m12">
+                 <h4 class="search_head">Search</h4>
+                 <div class="card-panel">
+                    <div class="row">
+                       {% csrf_token %} 
+                       <div class="row">
+                          <div class="input-field col xl3 s12">
+                             {{search_form.start_date}}
+                             <label for="startdate" class="">Start date</label>
+                          </div>
+                          <div class="input-field col xl3 s12">
+                             {{search_form.end_date}}
+                             <label for="enddate" class="">End date</label>
+                          </div>
+                          <div class="input-field col xl3 s12">
+                             {{search_form.member_id}}
+                             <label>Member ID</label>
+                          </div>
+                          <div class="input-field col xl3 s12">
+                             {{search_form.client_id}}
+                             <label>Client ID</label>
+                          </div>
+                       </div>
+                    </div>
+                    <div class="text-center">
+                       <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit <i class="material-icons right">send</i> </button>
+                    </div>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </form>
+     {%if result %}
+       <div class="row">
+          <div class="col s12">
+             <table class="responsive-table">
+                <thead>
+                   <tr>
+                      <th>Serial No.</th>
+                      <th>Client Id</th>
+                      <th>Member Id</th>
+                      <th>Question</th>
+                      <th>Answer</th>
+                      <th>Submitted Time</th>
+                   </tr>
+                </thead>
+                <tbody>
+                   {% for data in result %}
+                   <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{data.get_client}}</td>
+                      <td>{{data.get_member}}</td>
+                      <td>{{data.get_question}}</td>
+                      <td>{{data.get_answer}}</td>
+                      <td>{{data.get_survey_submitted_datetime}}</td>
+                   </tr>
+                   {% endfor %}
+                </tbody>
+             </table>
+          </div>
+       </div>
+     {% endif %}
+  </div>
+  <footer> © 2018 Survey All rights reserved </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  <script type="text/javascript">
+     document.addEventListener('DOMContentLoaded', function() {
+     var elems = document.querySelectorAll('.datepicker');
+     var instances = M.Datepicker.init(elems, options);
+     });
+     
+     // Or with jQuery
+     
+     $(document).ready(function(){
+     $('.datepicker').datepicker({ format: 'yyyy-mm-dd' });
+     });
+     
+     
+     document.addEventListener('DOMContentLoaded', function() {
+     var elems = document.querySelectorAll('select');
+     var instances = M.FormSelect.init(elems, options);
+     });
+     
+     // Or with jQuery
+     
+     $(document).ready(function(){
+     $('select').formSelect();
+     }); 
+     
+  </script>
+{% endblock content %}

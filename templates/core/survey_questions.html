@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+   {% if status %}
+      <header style="background-color:{{color}}">
+         <h3> Thank You!</h3>
+      </header>
+      <div class="container text-center">
+         <h5>Thank you for participating, your survey has been submitted successfully!</h5>
+      </div>
+   {%else%}
+   
+      <header style="background-color:{{color}}">
+         
+         <h3> SURVEY </h3>
+
+      </header>
+      <div class="container">
+         <form action="/save_survey/{{client_id}}/{{member_id}}/" method="POST" class="mt-20">
+            <!-- Material ui -->
+            <div class="row">
+               {% csrf_token %}
+               {% for survey_question in survey_questions %}
+   <!-- getcolor value -->
+                  {% if survey_question.answer_type.code == 'YES_NO'%}
+                     <div class="col xl12 ">
+                        <div class="card pad-20">
+                           <div class="card-body"> <span class="card-title"> Questions {{forloop.counter}} : <span>{{survey_question.question}}</span> </div>
+                           <div class="card-content row">
+                              <div class="col xl2 s6">
+                                 <label>
+                                 <input name="{{survey_question.id}}-answer" type="radio" required="" value="Yes" />
+                                 <span>Yes</span> </label>
+                              </div>
+                              <div class="col xl2 s6">
+                                 <label>
+                                 <input name="{{survey_question.id}}-answer" type="radio" required="" value="No" />
+                                 <span>No</span> </label>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  {%elif survey_question.answer_type.code == 'STARS'%}
+                     <div class="col xl12 ">
+                        <div class="card pad-20">
+                           <div class="card-body"> <span class="card-title"> Questions {{forloop.counter}} : <span>{{survey_question.question}}</span> </div>
+                           <div id="ratingsForm" class="star_rate">
+                              <div class="stars">
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="1" class="star-1" id="star-1" required="" />
+                                 <label class="star-1" for="star-1">1</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="2" class="star-2" id="star-2" required="" />
+                                 <label class="star-2" for="star-2">2</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="3" class="star-3" id="star-3" required="" />
+                                 <label class="star-3" for="star-3">3</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="4" class="star-4" id="star-4" required="" />
+                                 <label class="star-4" for="star-4">4</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="5" class="star-5" id="star-5" required="" />
+                                 <label class="star-5" for="star-5">5</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="6" class="star-6" id="star-6" required="" />
+                                 <label class="star-6" for="star-6">7</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="7" class="star-7" id="star-7" required="" />
+                                 <label class="star-7" for="star-7">7</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="8" class="star-8" id="star-8" required="" />
+                                 <label class="star-8" for="star-8">8</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="9" class="star-9" id="star-9" required="" />
+                                 <label class="star-9" for="star-9">9</label>
+                                 <input type="radio" name="{{survey_question.id}}-answer" value="10" class="star-10" id="star-10" required="" />
+                                 <label class="star-10" for="star-10">10</label>
+                                 <span></span>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  {%elif survey_question.answer_type.code == 'FREEFORM'%}
+                     <div class="col s12 ">
+                        <div class="card pad-20 mh-180">
+                           <div class="card-body"> <span class="card-title"> Questions {{forloop.counter}} : <span>{{survey_question.question}}</span> </div>
+                           <div class="card-content row">
+                              <div class="input-field col s12">
+                                 <textarea id="icon_prefix2" class="materialize-textarea" name="{{survey_question.id}}-answer" required=""></textarea>
+                                 <label for="icon_prefix2">Answer </label>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  {%endif%}
+               {%endfor%}
+            </div>
+            <div class="text-center">
+               <button class="btn waves-effect waves-light btn-large" type="submit" name="action">Submit <i class="material-icons right">send</i> </button>
+            </div>
+         </form>
+      </div>
+      <footer> © 2018 Survey All rights reserved </footer>
+   {%endif%}
+{% endblock content %}
